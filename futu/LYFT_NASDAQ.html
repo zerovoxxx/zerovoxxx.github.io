@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>正在打开 富途牛牛</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f4;
+            text-align: center;
+        }
+        .container {
+            padding: 20px;
+        }
+        h1 {
+            font-size: 24px;
+            color: #333;
+        }
+        p {
+            font-size: 16px;
+            color: #666;
+        }
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>正在尝试打开 富途牛牛...</h1>
+        <div class="loader"></div>
+        <p>如果应用未自动打开，它可能未安装。<br>稍后将自动跳转到应用商店。</p>
+    </div>
+
+    <script>
+        (function() {
+            // --- 请在这里配置你的链接 ---
+            // 1. App的URL Schema链接
+            const urlScheme = 'ftnn://quote/2/LYFT/';
+
+            // 2. 苹果App Store的下载链接
+            const appStoreUrl = 'https://apps.apple.com/cn/app/id1150453343';
+
+            // 3. 安卓Google Play或其他应用市场的下载链接
+            const androidMarketUrl = 'https://play.google.com/store/apps/details?id=cn.futu.trader';
+            // --- 配置结束 ---
+
+
+            // 检测设备类型
+            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+            const isIOS = /iPad|iPhone|iPod/.test(userAgent) && !window.MSStream;
+            const isAndroid = /android/i.test(userAgent);
+
+            // 尝试打开URL Scheme
+            window.location.href = urlScheme;
+
+            // 设置一个延时器，如果2.5秒后用户还在这个页面，
+            // 就认为App没有被成功唤起，然后跳转到应用商店。
+            setTimeout(function() {
+                const now = new Date().valueOf();
+                // 如果页面从后台切换回来，时间差会很大，说明App可能已经打开
+                // 如果时间差很小，说明app没有被打开
+                // (这是一个常用的判断技巧)
+                if (now - startTime < 3000) {
+                     if (isIOS) {
+                        window.location.href = appStoreUrl;
+                    } else if (isAndroid) {
+                        window.location.href = androidMarketUrl;
+                    } else {
+                        // 对于PC或其他设备，可以跳转到官网
+                        window.location.href = 'https://www.futunn.com/';
+                    }
+                }
+            }, 2500);
+
+            const startTime = new Date().valueOf();
+
+        })();
+    </script>
+</body>
+</html>
